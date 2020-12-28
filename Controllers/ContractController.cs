@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using InsuranceApp.Entities;
 using InsuranceApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace InsuranceApp.Controllers
 {
@@ -27,6 +25,7 @@ namespace InsuranceApp.Controllers
         {
             var contracts = _insuranceDbContext.Contracts.ToList();
             var contractsDto = _mapper.Map<List<ContractDto>>(contracts);
+
             return Ok(contractsDto);
         }
 
@@ -39,6 +38,7 @@ namespace InsuranceApp.Controllers
                 return NotFound();
 
             var contractDto = _mapper.Map<ContractDto>(contract);
+
             return Ok(contractDto);
         }
 
