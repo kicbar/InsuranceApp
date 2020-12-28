@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using InsuranceApp.Entities;
+using InsuranceApp.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsuranceApp.Controllers
@@ -12,44 +14,60 @@ namespace InsuranceApp.Controllers
     public class ContractController : Controller
     {
         private readonly InsuranceDbContext _insuranceDbContext;
+        private readonly IMapper _mapper;
 
-        public ContractController(InsuranceDbContext insuranceDbContext)
+        public ContractController(InsuranceDbContext insuranceDbContext, IMapper mapper)
         {
             _insuranceDbContext = insuranceDbContext;
+            _mapper = mapper;
         }
 
         [HttpGet]
-        public ActionResult Get()
+        public ActionResult<List<ContractDto>> Get()
         {
-            var contracts = _insuranceDbContext.Contracts;
-            return Ok(contracts);
+            var contracts = _insuranceDbContext.Contracts.ToList();
+            var contractsDto = _mapper.Map<List<ContractDto>>(contracts);
+            return Ok(contractsDto);
         }
 
-        [HttpGet("{contractNum}")]
-        public ActionResult Get(string contractNum)
+        [HttpGet("{contractNumber}")]
+        public ActionResult<ContractDto> Get(string contractNumber)
         {
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNum);
-            return Ok(contract);
+            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
+
+            if (contract == null)
+                return NotFound();
+
+            var contractDto = _mapper.Map<ContractDto>(contract);
+            return Ok(contractDto);
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Contract contractModel)
+        public ActionResult Post([FromBody] ContractDto contractModel)
         {
-            _insuranceDbContext.Contracts.Add(contractModel);
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var contract = _mapper.Map<Contract>(contractModel);
+
+            _insuranceDbContext.Contracts.Add(contract);
             _insuranceDbContext.SaveChanges();
 
-            var key = contractModel.ContractNr.Replace(" ", "-").ToLower();
+            var key = contract.ContractNr.Replace(" ", "-").ToLower();
 
             return Created("api/insurance/" + key, null);
         }
 
-        [HttpPut("{contractNum}")]
-        public ActionResult Put(string contractNum, [FromBody] Contract contractModel)
+        [HttpPut("{contractNumber}")]
+        public ActionResult Put(string contractNumber, [FromBody] ContractDto contractModel)
         {
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNum);
+            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
 
             if (contract == null)
                 return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
             contract.ContractNr = contractModel.ContractNr;
             contract.InsuredPerson = contractModel.InsuredPerson;
@@ -61,15 +79,18 @@ namespace InsuranceApp.Controllers
             return NoContent();
         }
 
-        [HttpDelete("{contractNum}")]
-        public ActionResult Delete(string contractNum)
+        [HttpDelete("{contractNumber}")]
+        public ActionResult Delete(string contractNumber)
         {
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNum);
+            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
+
+            if (contract == null)
+                return NotFound();
+
             _insuranceDbContext.Contracts.Remove(contract);
             _insuranceDbContext.SaveChanges();
 
             return NoContent();
         }
-
     }
 }
