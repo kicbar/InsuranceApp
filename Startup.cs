@@ -31,7 +31,7 @@ namespace InsuranceApp
             services.AddDbContext<InsuranceDbContext>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("V1", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "V1",
                     Title = "Insurance API",
