@@ -1,3 +1,4 @@
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,7 @@ namespace InsuranceApp
         {
             services.AddControllers();
             services.AddDbContext<InsuranceDbContext>();
+            services.AddAutoMapper(this.GetType().Assembly);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
