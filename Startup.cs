@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.OpenApi.Models;
 
 namespace InsuranceApp
 {
@@ -29,7 +29,20 @@ namespace InsuranceApp
         {
             services.AddControllers();
             services.AddDbContext<InsuranceDbContext>();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("V1", new OpenApiInfo
+                {
+                    Version = "V1",
+                    Title = "Insurance API",
+                    Description = "Webservices documentations for insurance company.",
+                    Contact = new OpenApiContact
+                    {
+                        Name = "kicbar",
+                        Email = "kicbar@gmail.com",
+                    }
+                });
+            });
 
         }
 
@@ -44,7 +57,7 @@ namespace InsuranceApp
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Insurance API_V1");
             });
 
             app.UseHttpsRedirection();
