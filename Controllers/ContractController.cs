@@ -24,5 +24,12 @@ namespace InsuranceApp.Controllers
             var contracts = _insuranceDbContext.Contracts;
             return Ok(contracts);
         }
+
+        [HttpGet("{contractNr}")]
+        public ActionResult Get(string contractNr)
+        {
+            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNr);
+            return Ok(contract);
+        }
     }
 }
