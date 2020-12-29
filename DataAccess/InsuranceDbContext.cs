@@ -1,7 +1,7 @@
 ﻿using InsuranceApp.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace InsuranceApp.Infratructure
+namespace InsuranceApp.DataAccess
 {
     public class InsuranceDbContext : DbContext
     {
