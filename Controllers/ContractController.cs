@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Http;
 
 namespace InsuranceApp.Controllers
 {
@@ -26,17 +27,29 @@ namespace InsuranceApp.Controllers
         }
 
         [HttpGet]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<List<ContractDto>> Get()
         {
             _logger.LogInformation("Get method started.");
 
             var contracts = _insuranceDbContext.Contracts.ToList();
+
+            if (contracts == null)
+                return NotFound();
+
             var contractsDto = _mapper.Map<List<ContractDto>>(contracts);
 
             return Ok(contractsDto);
         }
 
         [HttpGet("{contractNumber}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ContractDto> Get(string contractNumber)
         {
             _logger.LogInformation("Get details method started.");
@@ -52,6 +65,11 @@ namespace InsuranceApp.Controllers
         }
 
         [HttpPost]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Post([FromBody] ContractDto contractModel)
         {
             _logger.LogInformation("Post method started.");
@@ -70,6 +88,12 @@ namespace InsuranceApp.Controllers
         }
 
         [HttpPut("{contractNumber}")]
+        [Produces("application/json")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Put(string contractNumber, [FromBody] ContractDto contractModel)
         {
             _logger.LogInformation("Put method started.");
@@ -93,6 +117,10 @@ namespace InsuranceApp.Controllers
         }
 
         [HttpDelete("{contractNumber}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Delete(string contractNumber)
         {
             _logger.LogInformation("Delete method started.");

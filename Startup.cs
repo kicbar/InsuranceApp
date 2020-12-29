@@ -61,6 +61,7 @@ namespace InsuranceApp
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "Insurance API_V1");
+                c.RoutePrefix = string.Empty;
             });
 
             app.UseHttpsRedirection();
