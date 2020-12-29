@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using InsuranceApp.Entities;
+using InsuranceApp.Infratructure;
 using InsuranceApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;

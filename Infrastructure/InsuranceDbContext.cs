@@ -1,6 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using InsuranceApp.Entities;
+using Microsoft.EntityFrameworkCore;
 
-namespace InsuranceApp.Entities
+namespace InsuranceApp.Infratructure
 {
     public class InsuranceDbContext : DbContext
     {
