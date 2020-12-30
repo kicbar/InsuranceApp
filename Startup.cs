@@ -14,6 +14,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using InsuranceApp.DataAccess;
+using InsuranceApp.HealthCheck;
+
 
 namespace InsuranceApp
 {
@@ -32,6 +34,8 @@ namespace InsuranceApp
             services.AddControllers();
             services.AddDbContext<InsuranceDbContext>();
             services.AddAutoMapper(this.GetType().Assembly);
+            services.AddHealthChecks()
+                .AddCheck<HealthCheckApp>("health_check");
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -73,6 +77,7 @@ namespace InsuranceApp
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/health");
             });
         }
     }
