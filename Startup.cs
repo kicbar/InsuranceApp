@@ -13,7 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using InsuranceApp.DataAccess;
+using InsuranceApp.Data;
 using InsuranceApp.HealthCheck;
 
 

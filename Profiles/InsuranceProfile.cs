@@ -2,7 +2,7 @@
 using InsuranceApp.Entities;
 using InsuranceApp.Models;
 
-namespace InsuranceApp
+namespace InsuranceApp.Profiles
 {
     public class InsuranceProfile : Profile
     {
