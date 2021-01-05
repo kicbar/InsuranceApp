@@ -15,7 +15,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using InsuranceApp.Data;
 using InsuranceApp.HealthCheck;
-
+using InsuranceApp.Middleware;
 
 namespace InsuranceApp
 {
@@ -72,6 +72,8 @@ namespace InsuranceApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseMiddleware<LoggingRequestsMiddleware>();
 
             app.UseAuthorization();
 
