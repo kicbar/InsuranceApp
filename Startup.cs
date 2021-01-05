@@ -34,6 +34,7 @@ namespace InsuranceApp
             services.AddControllers();
             services.AddDbContext<InsuranceDbContext>();
             services.AddAutoMapper(this.GetType().Assembly);
+            services.AddScoped<InsuranceDbInitializer>();
             services.AddHealthChecks()
                 .AddCheck<HealthCheckApp>("health_check");
             services.AddSwaggerGen(c =>
@@ -54,7 +55,7 @@ namespace InsuranceApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, InsuranceDbInitializer insuranceDbInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -79,6 +80,8 @@ namespace InsuranceApp
                 endpoints.MapControllers();
                 endpoints.MapHealthChecks("/health");
             });
+
+            insuranceDbInitializer.Initialize();
         }
     }
 }
