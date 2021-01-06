@@ -36,7 +36,8 @@ namespace InsuranceApp
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<InsuranceDbInitializer>();
             services.AddHealthChecks()
-                .AddCheck<HealthCheckApp>("health_check");
+                    .AddCheck<HealthCheckApp>("health_check");
+            services.AddScoped<LimitRequestsMiddleware>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -73,6 +74,7 @@ namespace InsuranceApp
 
             app.UseRouting();
 
+            app.UseMiddleware<LimitRequestsMiddleware>();
             app.UseMiddleware<LoggingRequestsMiddleware>();
 
             app.UseAuthorization();

@@ -20,7 +20,7 @@ namespace InsuranceApp.Middleware
         {
             await _next(context);
             
-            _logger.LogInformation($"{DateTime.Now}: {context.Request.Host}{context.Request.Path} - StatusCode {context.Response.StatusCode}");
+            _logger.LogInformation($"[Middleware] - {DateTime.Now}: {context.Request.Host}{context.Request.Path} - StatusCode {context.Response.StatusCode}");
         }
     }
 }
