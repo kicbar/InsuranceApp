@@ -33,7 +33,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<List<ContractDto>> Get()
         {
-            _logger.LogInformation("Get method started.");
+            _logger.LogInformation("[Controller] - Get method started.");
 
             var contracts = _insuranceDbContext.Contracts.ToList();
 
@@ -52,7 +52,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ContractDto> Get(string contractNumber)
         {
-            _logger.LogInformation("Get details method started.");
+            _logger.LogInformation("[Controller] - Get details method started.");
 
             var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
 
@@ -72,7 +72,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Post([FromBody] ContractDto contractModel)
         {
-            _logger.LogInformation("Post method started.");
+            _logger.LogInformation("[Controller] - Post method started.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -96,7 +96,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Put(string contractNumber, [FromBody] ContractDto contractModel)
         {
-            _logger.LogInformation("Put method started.");
+            _logger.LogInformation("[Controller] - Put method started.");
 
             var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
 
@@ -123,7 +123,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Delete(string contractNumber)
         {
-            _logger.LogInformation("Delete method started.");
+            _logger.LogInformation("[Controller] - Delete method started.");
 
             var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
 
