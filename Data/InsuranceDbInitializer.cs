@@ -20,7 +20,7 @@ namespace InsuranceApp.Data
             {
                 if (!_insuranceDbContext.Contracts.Any())
                     InsertSampleContractData();
-                if (!_insuranceDbContext.Perosns.Any())
+                if (!_insuranceDbContext.Persons.Any())
                     InsertSamplePersonData();
             }
         }
@@ -101,7 +101,7 @@ namespace InsuranceApp.Data
                 }
             };
 
-            _insuranceDbContext.Perosns.AddRange(persons);
+            _insuranceDbContext.Persons.AddRange(persons);
             _insuranceDbContext.SaveChanges();
         }
 

@@ -8,7 +8,7 @@ namespace InsuranceApp.Data
         private string _connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=InsuranceDB;Trusted_Connection=True;MultipleActiveResultSets=true";
 
         public DbSet<Contract> Contracts { get; set; }
-        public DbSet<Person> Perosns { get; set; }
+        public DbSet<Person> Persons { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

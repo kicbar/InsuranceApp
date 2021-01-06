@@ -9,6 +9,6 @@ namespace InsuranceApp.Entities
         public string LastName { get; set; }
         public string Pesel { get; set; }
         public string Nationality { get; set; }
-        public DateTime InsertDate { get; set; }
+        public DateTime InsertDate { get; set; } = DateTime.Now;
     }
 }

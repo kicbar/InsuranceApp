@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace InsuranceApp.Models
 {
     public class PersonDto
     {
+        [Required]
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Pesel { get; set; }
         public string Nationality { get; set; }
-        public DateTime InsertDate { get; set; } = DateTime.Now;
     }
 }
