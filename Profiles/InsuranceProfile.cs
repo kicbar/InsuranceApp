@@ -10,6 +10,8 @@ namespace InsuranceApp.Profiles
         {
             CreateMap<ContractDto, Contract>()
                 .ReverseMap();
+            CreateMap<PersonDto, Person>()
+                .ReverseMap();
         }
     }
 }
