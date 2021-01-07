@@ -17,13 +17,13 @@ namespace InsuranceApp
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                logger.Debug("init main");
+                logger.Debug($"[Program - Main Method] - [Application run at {DateTime.Now}]");
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception exception)
             {
                 //NLog: catch setup errors
-                logger.Error(exception, "Stopped program because of exception");
+                logger.Error(exception, $"Unhandled error exception. [Program - Main Method] - Application stopped at {DateTime.Now}");
                 throw;
             }
             finally
