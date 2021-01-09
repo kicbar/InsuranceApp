@@ -12,17 +12,15 @@ using InsuranceApp.Repositories.Abstractions;
 namespace InsuranceApp.Controllers
 {
     [ApiController]
-    [Route("api/Insurance")]
+    [Route("api/contract")]
     public class ContractController : Controller
     {
-        private readonly InsuranceDbContext _insuranceDbContext;
         private readonly IContractRepository _contractRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<ContractController> _logger;
 
-        public ContractController(InsuranceDbContext insuranceDbContext, IContractRepository contractRepository, IMapper mapper, ILogger<ContractController> logger)
+        public ContractController(IContractRepository contractRepository, IMapper mapper, ILogger<ContractController> logger)
         {
-            _insuranceDbContext = insuranceDbContext;
             _contractRepository = contractRepository;
             _mapper = mapper;
             _logger = logger;
@@ -37,7 +35,7 @@ namespace InsuranceApp.Controllers
         {
             _logger.LogInformation("[Controller] - Get method started.");
 
-            var contracts = _insuranceDbContext.Contracts.ToList();
+            var contracts = _contractRepository.GetContracts();
 
             if (contracts == null)
                 return NotFound();
@@ -56,7 +54,7 @@ namespace InsuranceApp.Controllers
         {
             _logger.LogInformation("[Controller] - Get details method started.");
 
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
+            var contract = _contractRepository.GetContractById(contractNumber);
 
             if (contract == null)
                 return NotFound();
@@ -81,8 +79,7 @@ namespace InsuranceApp.Controllers
 
             var contract = _mapper.Map<Contract>(contractModel);
 
-            _insuranceDbContext.Contracts.Add(contract);
-            _insuranceDbContext.SaveChanges();
+            _contractRepository.AddContract(contract);
 
             var key = contract.ContractNr.Replace(" ", "-").ToLower();
 
@@ -100,7 +97,7 @@ namespace InsuranceApp.Controllers
         {
             _logger.LogInformation("[Controller] - Put method started.");
 
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
+            var contract = _contractRepository.GetContractById(contractNumber);
 
             if (contract == null)
                 return NotFound();
@@ -108,12 +105,7 @@ namespace InsuranceApp.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            contract.ContractNr = contractModel.ContractNr;
-            contract.InsuredPerson = contractModel.InsuredPerson;
-            contract.InsuranceType = contractModel.InsuranceType;
-            contract.StartDate = contractModel.StartDate;
-
-            _insuranceDbContext.SaveChanges();
+            _contractRepository.EditContract(contract, contractModel);
 
             return NoContent();
         }
@@ -127,15 +119,15 @@ namespace InsuranceApp.Controllers
         {
             _logger.LogInformation("[Controller] - Delete method started.");
 
-            var contract = _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractNumber);
+            var contract = _contractRepository.GetContractById(contractNumber);
 
             if (contract == null)
                 return NotFound();
 
-            _insuranceDbContext.Contracts.Remove(contract);
-            _insuranceDbContext.SaveChanges();
+            _contractRepository.DeleteContract(contract);
 
             return NoContent();
         }
+
     }
 }

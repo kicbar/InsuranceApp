@@ -1,8 +1,10 @@
 ﻿using InsuranceApp.Data;
 using InsuranceApp.Entities;
+using InsuranceApp.Models;
 using InsuranceApp.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace InsuranceApp.Repositories
 {
@@ -15,29 +17,37 @@ namespace InsuranceApp.Repositories
             _insuranceDbContext = insuranceDbContext;
         }
 
-        public void AddContract()
+        public List<Contract> GetContracts()
         {
-            throw new NotImplementedException();
+            return _insuranceDbContext.Contracts.ToList();
         }
 
-        public void DeleteContract()
+        public Contract GetContractById(string contractId)
         {
-            throw new NotImplementedException();
+            return _insuranceDbContext.Contracts.FirstOrDefault(c => c.ContractNr == contractId);
         }
 
-        public void EditContract()
+        public void AddContract(Contract contract)
         {
-            throw new NotImplementedException();
+            _insuranceDbContext.Contracts.Add(contract);
+            _insuranceDbContext.SaveChanges();
         }
 
-        Contract IContractRepository.GetContractById(string contractId)
+        public void EditContract(Contract contract, ContractDto contractDto)
         {
-            throw new NotImplementedException();
+            contract.ContractNr = contractDto.ContractNr;
+            contract.InsuredPerson = contractDto.InsuredPerson;
+            contract.InsuranceType = contractDto.InsuranceType;
+            contract.StartDate = contractDto.StartDate;
+
+            _insuranceDbContext.SaveChanges();
         }
 
-        List<Contract> IContractRepository.GetContracts()
+        public void DeleteContract(Contract contract)
         {
-            throw new NotImplementedException();
+            _insuranceDbContext.Contracts.Remove(contract);
+            _insuranceDbContext.SaveChanges();
         }
+
     }
 }
