@@ -1,5 +1,6 @@
 ﻿using InsuranceApp.Data;
 using InsuranceApp.Entities;
+using InsuranceApp.Models;
 using InsuranceApp.Repositories.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -19,28 +20,33 @@ namespace InsuranceApp.Repositories
 
         List<Person> IPersonRepository.GetPersons()
         {
-            var persons = _insuranceDbContext.Persons.ToList();
-            return persons;
-        }
-
-        public void AddPerson()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void DeletePerson()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void EditPerson()
-        {
-            throw new NotImplementedException();
+            return _insuranceDbContext.Persons.ToList();
         }
 
         public Person GetPersonByPesel(string pesel)
         {
-            throw new NotImplementedException();
+            return _insuranceDbContext.Persons.FirstOrDefault(p => p.Pesel == pesel);
+        }
+
+        public void AddPerson(Person person)
+        {
+            _insuranceDbContext.Persons.Add(person);
+            _insuranceDbContext.SaveChanges();
+        }
+
+        public void EditPerson(Person person, PersonDto personModel)
+        {
+            person.FirstName = personModel.FirstName;
+            person.LastName = personModel.LastName;
+            person.Pesel = personModel.Pesel;
+            person.Nationality = personModel.Nationality;
+
+            _insuranceDbContext.SaveChanges();
+        }
+        public void DeletePerson(Person person)
+        {
+            _insuranceDbContext.Persons.Remove(person);
+            _insuranceDbContext.SaveChanges();
         }
 
     }

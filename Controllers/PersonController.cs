@@ -16,13 +16,11 @@ namespace InsuranceApp.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonRepository _personRepository;
-        private readonly InsuranceDbContext _insuranceDbContext;
         private readonly IMapper _mapper;
 
-        public PersonController(InsuranceDbContext insuranceDbContext, IPersonRepository personRepository, IMapper mapper)
+        public PersonController(IPersonRepository personRepository, IMapper mapper)
         {
             _personRepository = personRepository;
-            _insuranceDbContext = insuranceDbContext;
             _mapper = mapper;
         }
 
@@ -42,7 +40,7 @@ namespace InsuranceApp.Controllers
         [HttpGet("{pesel}")]
         public ActionResult<PersonDto> Get(string pesel)
         {
-            var person = _insuranceDbContext.Persons.FirstOrDefault(p => p.Pesel == pesel);
+            var person = _personRepository.GetPersonByPesel(pesel);
 
             if (person == null)
                 return NotFound();
@@ -60,8 +58,7 @@ namespace InsuranceApp.Controllers
 
             var person = _mapper.Map<Person>(personModel);
 
-            _insuranceDbContext.Persons.Add(person);
-            _insuranceDbContext.SaveChanges();
+            _personRepository.AddPerson(person);
 
             return Created("api/person/" + person.Pesel, null);
         }
@@ -69,7 +66,7 @@ namespace InsuranceApp.Controllers
         [HttpPut("{pesel}")]
         public ActionResult Put(string pesel, [FromBody] PersonDto personModel)
         {
-            var person = _insuranceDbContext.Persons.FirstOrDefault(p => p.Pesel == pesel);
+            var person = _personRepository.GetPersonByPesel(pesel);
 
             if (person == null)
                 return NotFound();
@@ -77,12 +74,7 @@ namespace InsuranceApp.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            person.FirstName = personModel.FirstName;
-            person.LastName = personModel.LastName;
-            person.Pesel = personModel.Pesel;
-            person.Nationality = personModel.Nationality;
-
-            _insuranceDbContext.SaveChanges();
+            _personRepository.EditPerson(person, personModel);
 
             return NoContent();
         }
@@ -90,13 +82,12 @@ namespace InsuranceApp.Controllers
         [HttpDelete("{pesel}")]
         public ActionResult Delete(string pesel)
         {
-            var person = _insuranceDbContext.Persons.FirstOrDefault(p => p.Pesel == pesel);
+            var person = _personRepository.GetPersonByPesel(pesel);
 
             if (person == null)
                 return NotFound();
 
-            _insuranceDbContext.Persons.Remove(person);
-            _insuranceDbContext.SaveChanges();
+            _personRepository.DeletePerson(person);
 
             return NoContent();
         }
