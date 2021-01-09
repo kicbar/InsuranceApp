@@ -20,6 +20,8 @@ using InsuranceApp.Middleware;
 using InsuranceApp.Entities;
 using InsuranceApp.Validators;
 using InsuranceApp.Models;
+using InsuranceApp.Repositories.Abstractions;
+using InsuranceApp.Repositories;
 
 namespace InsuranceApp
 {
@@ -38,6 +40,8 @@ namespace InsuranceApp
             services.AddMvc();
             services.AddControllers()
                     .AddFluentValidation();
+            services.AddTransient<IContractRepository, ContractRepository>();
+            services.AddTransient<IPersonRepository, PersonRepository>();
             services.AddDbContext<InsuranceDbContext>();
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<InsuranceDbInitializer>();

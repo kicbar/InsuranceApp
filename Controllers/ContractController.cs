@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
+using InsuranceApp.Repositories.Abstractions;
 
 namespace InsuranceApp.Controllers
 {
@@ -15,15 +16,16 @@ namespace InsuranceApp.Controllers
     public class ContractController : Controller
     {
         private readonly InsuranceDbContext _insuranceDbContext;
+        private readonly IContractRepository _contractRepository;
         private readonly IMapper _mapper;
         private readonly ILogger<ContractController> _logger;
 
-        public ContractController(InsuranceDbContext insuranceDbContext, IMapper mapper, ILogger<ContractController> logger)
+        public ContractController(InsuranceDbContext insuranceDbContext, IContractRepository contractRepository, IMapper mapper, ILogger<ContractController> logger)
         {
             _insuranceDbContext = insuranceDbContext;
+            _contractRepository = contractRepository;
             _mapper = mapper;
             _logger = logger;
-            _logger.LogDebug(1, "NLog injected into ContractController");
         }
 
         [HttpGet]

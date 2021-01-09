@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using InsuranceApp.Repositories.Abstractions;
 
 namespace InsuranceApp.Controllers
 {
@@ -14,11 +15,13 @@ namespace InsuranceApp.Controllers
     [Route("api/person")]
     public class PersonController : ControllerBase
     {
+        private readonly IPersonRepository _personRepository;
         private readonly InsuranceDbContext _insuranceDbContext;
         private readonly IMapper _mapper;
 
-        public PersonController(InsuranceDbContext insuranceDbContext, IMapper mapper)
+        public PersonController(InsuranceDbContext insuranceDbContext, IPersonRepository personRepository, IMapper mapper)
         {
+            _personRepository = personRepository;
             _insuranceDbContext = insuranceDbContext;
             _mapper = mapper;
         }
@@ -26,7 +29,7 @@ namespace InsuranceApp.Controllers
         [HttpGet]
         public ActionResult<List<PersonDto>> Get()
         {
-            var persons = _insuranceDbContext.Persons.ToList();
+            var persons = _personRepository.GetPersons();
 
             if (persons == null)
                 return NotFound();
