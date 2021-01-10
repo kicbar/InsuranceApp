@@ -24,7 +24,7 @@ namespace InsuranceApp.Data
                 _logger.LogInformation($"[DbInitializer] - Connection to database sucesfully at {DateTime.Now}.");
                 if (!_insuranceDbContext.Contracts.Any())
                 {
-                    InsertSampleContractData();
+                    //InsertSampleContractData();
                     _logger.LogInformation($"[DbInitializer] - Database [Contracts] Initialized at {DateTime.Now}.");
                 }
                 if (!_insuranceDbContext.Persons.Any())
@@ -36,7 +36,7 @@ namespace InsuranceApp.Data
             else
                 _logger.LogInformation($"[DbInitializer] - Critical Error during connect to database at  {DateTime.Now}.");
         }
-
+        /*
         public void InsertSampleContractData()
         {
             var contracts = new List<Contract>
@@ -44,37 +44,50 @@ namespace InsuranceApp.Data
                 new Contract
                 {
                     ContractNr = "L1231",
-                    InsuredPerson = "Harvey Specter",
+                    StartDate = DateTime.Parse("2020-12-31"),
+                    EndDate = DateTime.Parse("2021-12-31"),
                     InsuranceType = "Life",
-                    StartDate = DateTime.Parse("2020-12-31")
+                    Value = "1000PLN",
+                    Status = 1,
+                    Person = new Person
+                    { 
+                        
+
+                    }
                 },
                 new Contract
                 {
                     ContractNr = "M0101",
-                    InsuredPerson = "Gregory House",
+                    StartDate = DateTime.Parse("2020-01-01T00:00:00"),
+                    EndDate = DateTime.Parse("2021-01-01T00:00:00"),
                     InsuranceType = "Motor",
-                    StartDate = DateTime.Parse("2020-01-01T00:00:00")
+                    Value = "2000PLN",
+                    Status = 1,
                 },
                 new Contract
                 {
                     ContractNr = "T0101",
-                    InsuredPerson = "Donna Paulsen",
+                    StartDate = DateTime.Parse("2020-01-01T00:00:00"),
+                    EndDate = DateTime.Parse("2021-01-01T00:00:00"),
                     InsuranceType = "Travel",
-                    StartDate = DateTime.Parse("2020-01-01T00:00:00")
+                    Value = "4120PLN",
+                    Status = 1,
                 },
                 new Contract
                 {
                     ContractNr = "L1212",
-                    InsuredPerson = "Thomas Nowak",
+                    StartDate = DateTime.Parse("2020/12/12"),
+                    EndDate = DateTime.Parse("2021/12/12"),
                     InsuranceType = "Life",
-                    StartDate = DateTime.Parse("2020/12/12")
+                    Value = "9999PLN",
+                    Status = 1,
                 }
             };
 
             _insuranceDbContext.Contracts.AddRange(contracts);
             _insuranceDbContext.SaveChanges();
         }
-
+        */
         public void InsertSamplePersonData()
         { 
             var persons = new List<Person>
@@ -85,7 +98,16 @@ namespace InsuranceApp.Data
                     LastName = "Specter",
                     Pesel = "73112156714",
                     Nationality = "American",
-                    InsertDate = DateTime.Now
+                    InsertDate = DateTime.Now,
+                    Contract = new Contract
+                    {
+                        ContractNr = "L1231",
+                        StartDate = DateTime.Parse("2020-12-31"),
+                        EndDate = DateTime.Parse("2021-12-31"),
+                        InsuranceType = "Life",
+                        Value = "1000PLN",
+                        Status = 1
+                    }
                 },
                 new Person
                 {
@@ -93,7 +115,16 @@ namespace InsuranceApp.Data
                     LastName = "House",
                     Pesel = "57011899990",
                     Nationality = "American",
-                    InsertDate = DateTime.Now
+                    InsertDate = DateTime.Now,
+                    Contract = new Contract
+                    {
+                        ContractNr = "M0101",
+                        StartDate = DateTime.Parse("2020-01-01T00:00:00"),
+                        EndDate = DateTime.Parse("2021-01-01T00:00:00"),
+                        InsuranceType = "Motor",
+                        Value = "2000PLN",
+                        Status = 1
+                    }
                 },
                 new Person
                 {
@@ -101,13 +132,39 @@ namespace InsuranceApp.Data
                     LastName = "Paulsen",
                     Pesel = "89121204861",
                     Nationality = "American",
-                    InsertDate = DateTime.Now
+                    InsertDate = DateTime.Now,
+                    Contract = new Contract
+                    {
+                        ContractNr = "T0101",
+                        StartDate = DateTime.Parse("2020-01-01T00:00:00"),
+                        EndDate = DateTime.Parse("2021-01-01T00:00:00"),
+                        InsuranceType = "Travel",
+                        Value = "4120PLN",
+                        Status = 1
+                    }
                 },
                 new Person
                 {
                     FirstName = "Thomas",
                     LastName = "Nowak",
                     Pesel = "95031262019",
+                    Nationality = "Polish",
+                    InsertDate = DateTime.Now,
+                    Contract = new Contract
+                    {
+                        ContractNr = "L1212",
+                        StartDate = DateTime.Parse("2020/12/12"),
+                        EndDate = DateTime.Parse("2021/12/12"),
+                        InsuranceType = "Life",
+                        Value = "9999PLN",
+                        Status = 1
+                    }
+                },
+                new Person
+                {
+                    FirstName = "Person",
+                    LastName = "WithoutContract",
+                    Pesel = "15031262019",
                     Nationality = "Polish",
                     InsertDate = DateTime.Now
                 }

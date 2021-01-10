@@ -10,5 +10,7 @@ namespace InsuranceApp.Entities
         public string Pesel { get; set; }
         public string Nationality { get; set; }
         public DateTime InsertDate { get; set; } = DateTime.Now;
+        public virtual Contract Contract { get; set; }
+
     }
 }

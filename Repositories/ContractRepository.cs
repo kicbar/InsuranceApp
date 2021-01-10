@@ -36,7 +36,7 @@ namespace InsuranceApp.Repositories
         public void EditContract(Contract contract, ContractDto contractDto)
         {
             contract.ContractNr = contractDto.ContractNr;
-            contract.InsuredPerson = contractDto.InsuredPerson;
+            //contract.InsuredPerson = contractDto.InsuredPerson;
             contract.InsuranceType = contractDto.InsuranceType;
             contract.StartDate = contractDto.StartDate;
 

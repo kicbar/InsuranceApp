@@ -1,6 +1,7 @@
 ﻿using InsuranceApp.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
 
 namespace InsuranceApp.Data
@@ -16,6 +17,14 @@ namespace InsuranceApp.Data
 
         public DbSet<Contract> Contracts { get; set; }
         public DbSet<Person> Persons { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        { 
+            modelBuilder.Entity<Person>()
+                .HasOne(p => p.Contract)
+                .WithOne(c => c.Person)
+                .HasForeignKey<Contract>(c => c.InsuredId);
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
