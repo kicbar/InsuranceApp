@@ -1,4 +1,5 @@
 ﻿using InsuranceApp.Entities;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,21 +9,32 @@ namespace InsuranceApp.Data
     public class InsuranceDbInitializer
     {
         private readonly InsuranceDbContext _insuranceDbContext;
+        private readonly ILogger<InsuranceDbInitializer> _logger;
 
-        public InsuranceDbInitializer(InsuranceDbContext insuranceDbContext)
+        public InsuranceDbInitializer(InsuranceDbContext insuranceDbContext, ILogger<InsuranceDbInitializer> logger)
         {
             _insuranceDbContext = insuranceDbContext;
+            _logger = logger;
         }
 
         public void Initialize()
         {
             if (_insuranceDbContext.Database.CanConnect())
             {
+                _logger.LogInformation($"[DbInitializer] - Connection to database sucesfully at {DateTime.Now}.");
                 if (!_insuranceDbContext.Contracts.Any())
+                {
                     InsertSampleContractData();
+                    _logger.LogInformation($"[DbInitializer] - Database [Contracts] Initialized at {DateTime.Now}.");
+                }
                 if (!_insuranceDbContext.Persons.Any())
+                {
                     InsertSamplePersonData();
+                    _logger.LogInformation($"[DbInitializer] - Database [Persons] Initialized at {DateTime.Now}.");
+                }
             }
+            else
+                _logger.LogInformation($"[DbInitializer] - Critical Error during connect to database at  {DateTime.Now}.");
         }
 
         public void InsertSampleContractData()

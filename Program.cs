@@ -17,7 +17,7 @@ namespace InsuranceApp
             var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
             try
             {
-                logger.Debug($"[Program - Main Method] - [Application run at {DateTime.Now}]");
+                logger.Debug($"[Program - Main Method] - Application run at {DateTime.Now}");
                 CreateHostBuilder(args).Build().Run();
             }
             catch (Exception exception)

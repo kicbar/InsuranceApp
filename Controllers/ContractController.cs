@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using InsuranceApp.Entities;
-using InsuranceApp.Data;
 using InsuranceApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -8,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using InsuranceApp.Repositories.Abstractions;
+using System;
 
 namespace InsuranceApp.Controllers
 {
@@ -33,7 +33,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<List<ContractDto>> Get()
         {
-            _logger.LogInformation("[Controller] - Get method started.");
+            _logger.LogInformation($"[ContractController] - Get method started at {DateTime.Now}.");
 
             var contracts = _contractRepository.GetContracts();
 
@@ -52,7 +52,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult<ContractDto> Get(string contractNumber)
         {
-            _logger.LogInformation("[Controller] - Get details method started.");
+            _logger.LogInformation($"[ContractController] - Get details method started {DateTime.Now}.");
 
             var contract = _contractRepository.GetContractById(contractNumber);
 
@@ -72,7 +72,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Post([FromBody] ContractDto contractModel)
         {
-            _logger.LogInformation("[Controller] - Post method started.");
+            _logger.LogInformation($"[ContractController] - Post method started at {DateTime.Now}.");
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -95,7 +95,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Put(string contractNumber, [FromBody] ContractDto contractModel)
         {
-            _logger.LogInformation("[Controller] - Put method started.");
+            _logger.LogInformation($"[ContractController] - Put method started at {DateTime.Now}.");
 
             var contract = _contractRepository.GetContractById(contractNumber);
 
@@ -117,7 +117,7 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Delete(string contractNumber)
         {
-            _logger.LogInformation("[Controller] - Delete method started.");
+            _logger.LogInformation($"[ContractController] - Delete method started at {DateTime.Now}.");
 
             var contract = _contractRepository.GetContractById(contractNumber);
 
