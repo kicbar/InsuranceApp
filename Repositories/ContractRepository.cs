@@ -37,7 +37,6 @@ namespace InsuranceApp.Repositories
         public void EditContract(Contract contract, ContractDto contractDto)
         {
             contract.ContractNr = contractDto.ContractNr;
-            //contract.InsuredPerson = contractDto.InsuredPerson;
             contract.InsuranceType = contractDto.InsuranceType;
             contract.StartDate = contractDto.StartDate;
 
@@ -62,6 +61,7 @@ namespace InsuranceApp.Repositories
 
         public void AddContractRegister(Contract contract)
         {
+            contract.EndDate = contract.StartDate.AddYears(1);
             _insuranceDbContext.Contracts.Add(contract);
             _insuranceDbContext.SaveChanges();
         }
@@ -70,6 +70,7 @@ namespace InsuranceApp.Repositories
         {
             contract.ContractNr = contractRegisterDto.ContractNr;
             contract.StartDate = contractRegisterDto.StartDate;
+            contract.EndDate = contract.StartDate.AddYears(1);
             contract.InsuranceType = contractRegisterDto.InsuranceType;
             contract.Value = contractRegisterDto.Value;
             contract.Person.FirstName = contractRegisterDto.FirstName;
