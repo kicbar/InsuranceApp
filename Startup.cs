@@ -48,6 +48,8 @@ namespace InsuranceApp
             services.AddAutoMapper(this.GetType().Assembly);
             services.AddScoped<InsuranceDbInitializer>();
             services.AddScoped<IValidator<PersonDto>, PersonValidator>();
+            services.AddScoped<IValidator<ContractRegisterDto>, ContractRegisterValidator>();
+            services.AddScoped<IValidator<ContractValidator>, ContractValidator>();
             services.AddHealthChecks()
                     .AddCheck<HealthCheckApp>("health_check");
             services.AddScoped<LimitRequestsMiddleware>();

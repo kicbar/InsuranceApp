@@ -22,15 +22,10 @@ namespace InsuranceApp.Data
             if (_insuranceDbContext.Database.CanConnect())
             {
                 _logger.LogInformation($"[DbInitializer] - Connection to database sucesfully at {DateTime.Now}.");
-                if (!_insuranceDbContext.Contracts.Any())
+                if (!_insuranceDbContext.Contracts.Any() || !_insuranceDbContext.Persons.Any())
                 {
-                    //InsertSampleContractData();
-                    _logger.LogInformation($"[DbInitializer] - Database [Contracts] Initialized at {DateTime.Now}.");
-                }
-                if (!_insuranceDbContext.Persons.Any())
-                {
-                    InsertSamplePersonData();
-                    _logger.LogInformation($"[DbInitializer] - Database [Persons] Initialized at {DateTime.Now}.");
+                    InsertSampleData();
+                    _logger.LogInformation($"[DbInitializer] - Database Initialized at {DateTime.Now}.");
                 }
             }
             else
@@ -88,7 +83,7 @@ namespace InsuranceApp.Data
             _insuranceDbContext.SaveChanges();
         }
         */
-        public void InsertSamplePersonData()
+        public void InsertSampleData()
         { 
             var persons = new List<Person>
             { 
