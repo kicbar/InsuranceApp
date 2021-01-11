@@ -8,22 +8,24 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using InsuranceApp.Repositories.Abstractions;
 using System;
+using InsuranceApp.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace InsuranceApp.Controllers
 {
     [ApiController]
-    [Route("api/contract")]
-    public class ContractController : Controller
+    [Route("api/register-contract")]
+    public class ContractRegisterController : Controller
     {
         private readonly IContractRepository _contractRepository;
+        private readonly InsuranceDbContext _insuranceDbContext;
         private readonly IMapper _mapper;
-        private readonly ILogger<ContractController> _logger;
 
-        public ContractController(IContractRepository contractRepository, IMapper mapper, ILogger<ContractController> logger)
+        public ContractRegisterController(InsuranceDbContext insuranceDbContext, IContractRepository contractRepository, IMapper mapper)
         {
             _contractRepository = contractRepository;
+            _insuranceDbContext = insuranceDbContext;
             _mapper = mapper;
-            _logger = logger;
         }
 
         [HttpGet]
@@ -31,18 +33,16 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<List<ContractDto>> Get()
+        public ActionResult<List<ContractRegisterDto>> Get()
         {
-            _logger.LogInformation($"[ContractController] - Get method started at {DateTime.Now}.");
-
-            var contracts = _contractRepository.GetContracts();
+            var contracts = _contractRepository.GetContractsRegister();
 
             if (contracts == null)
                 return NotFound();
 
-            var contractsDto = _mapper.Map<List<ContractDto>>(contracts);
+            var contractsRegisterDto = _mapper.Map<List<ContractRegisterDto>>(contracts);
 
-            return Ok(contractsDto);
+            return Ok(contractsRegisterDto);
         }
 
         [HttpGet("{contractNumber}")]
@@ -50,18 +50,16 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<ContractDto> Get(string contractNumber)
+        public ActionResult<ContractRegisterDto> Get(string contractNumber)
         {
-            _logger.LogInformation($"[ContractController] - Get details method started {DateTime.Now}.");
-
-            var contract = _contractRepository.GetContractById(contractNumber);
+            var contract = _contractRepository.GetContractRegisterById(contractNumber);
 
             if (contract == null)
                 return NotFound();
 
-            var contractDto = _mapper.Map<ContractDto>(contract);
+            var contractRegisterDto = _mapper.Map<ContractRegisterDto>(contract);
 
-            return Ok(contractDto);
+            return Ok(contractRegisterDto);
         }
 
         [HttpPost]
@@ -70,20 +68,18 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult Post([FromBody] ContractDto contractModel)
+        public ActionResult Post([FromBody] ContractRegisterDto contractRegisterDto)
         {
-            _logger.LogInformation($"[ContractController] - Post method started at {DateTime.Now}.");
-
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var contract = _mapper.Map<Contract>(contractModel);
+            var contract = _mapper.Map<Contract>(contractRegisterDto);
 
-            _contractRepository.AddContract(contract);
+            _contractRepository.AddContractRegister(contract);
 
             var key = contract.ContractNr.Replace(" ", "-").ToLower();
 
-            return Created("api/contract/" + key, null);
+            return Created("api/register-contract/" + key, null); 
         }
 
         [HttpPut("{contractNumber}")]
@@ -93,11 +89,9 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult Put(string contractNumber, [FromBody] ContractDto contractModel)
+        public ActionResult Put(string contractNumber, [FromBody] ContractRegisterDto contractRegisterDto)
         {
-            _logger.LogInformation($"[ContractController] - Put method started at {DateTime.Now}.");
-
-            var contract = _contractRepository.GetContractById(contractNumber);
+            var contract = _contractRepository.GetContractRegisterById(contractNumber);
 
             if (contract == null)
                 return NotFound();
@@ -105,7 +99,7 @@ namespace InsuranceApp.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            _contractRepository.EditContract(contract, contractModel);
+            _contractRepository.EditContractRegister(contract, contractRegisterDto);
 
             return NoContent();
         }
@@ -116,15 +110,13 @@ namespace InsuranceApp.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public ActionResult Delete(string contractNumber)
-        {
-            _logger.LogInformation($"[ContractController] - Delete method started at {DateTime.Now}.");
-
-            var contract = _contractRepository.GetContractById(contractNumber);
+        { 
+            var contract = _contractRepository.GetContractRegisterById(contractNumber);
 
             if (contract == null)
                 return NotFound();
 
-            _contractRepository.DeleteContract(contract);
+            _contractRepository.DeleteContractRegister(contract);
 
             return NoContent();
         }
