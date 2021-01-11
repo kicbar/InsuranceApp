@@ -5,18 +5,11 @@ namespace InsuranceApp.Models
 {
     public class ContractDto
     {
-        [Required]
-        [StringLength(10, MinimumLength = 5)]
         public string ContractNr { get; set; }
-        [Required]
-        [StringLength(40, MinimumLength = 8)]
-        [RegularExpression(@"^[A-Z]+[a-zA-Z]*$")]
-        public string InsuredPerson { get; set; }
-        [Required]
-        [StringLength(6, MinimumLength = 1)]
-        public string InsuranceType { get; set; }
-        [Required]
-        [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public string InsuranceType { get; set; }
+        public string Value { get; set; }
+        public int Status { get; set; }
     }
 }
