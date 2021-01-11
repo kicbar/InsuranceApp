@@ -1,17 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using InsuranceApp.Repositories.Abstractions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InsuranceApp.Controllers
 {
     public class PersonController : Controller
     {
+        private readonly IPersonRepository _personRepository;
+
+        public PersonController(IPersonRepository personRepository)
+        {
+            _personRepository = personRepository;
+        }
+
         public IActionResult Index()
         {
-            // to implement
-            return View();
+            return View(_personRepository.GetPersonsEnum());
         }
     }
 }

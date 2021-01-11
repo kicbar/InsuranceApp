@@ -6,6 +6,7 @@ namespace InsuranceApp.Repositories.Abstractions
 {
     public interface IPersonRepository
     {
+        public IEnumerable<PersonDto> GetPersonsEnum();
         public List<Person> GetPersons();
         public Person GetPersonByPesel(string pesel);
         public void AddPerson(Person person);

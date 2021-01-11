@@ -1,4 +1,5 @@
-﻿using InsuranceApp.Data;
+﻿using AutoMapper;
+using InsuranceApp.Data;
 using InsuranceApp.Entities;
 using InsuranceApp.Models;
 using InsuranceApp.Repositories.Abstractions;
@@ -11,11 +12,19 @@ namespace InsuranceApp.Repositories
     public class PersonRepository : IPersonRepository
     {
         private InsuranceDbContext _insuranceDbContext;
+        private IMapper _mapper;
 
-
-        public PersonRepository(InsuranceDbContext insuranceDbContext)
+        public PersonRepository(InsuranceDbContext insuranceDbContext, IMapper mapper)
         {
             _insuranceDbContext = insuranceDbContext;
+            _mapper = mapper;
+        }
+
+        public IEnumerable<PersonDto> GetPersonsEnum()
+        {
+            var persons = _insuranceDbContext.Persons;
+            var personsDto = _mapper.Map<IEnumerable<PersonDto>>(persons);
+            return personsDto;
         }
 
         List<Person> IPersonRepository.GetPersons()
