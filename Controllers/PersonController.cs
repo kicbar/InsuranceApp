@@ -103,5 +103,38 @@ namespace InsuranceApp.Controllers
             return View(personDto);
         }
 
+        // GET: Person/Remove/{pesel}
+        public async Task<IActionResult> Remove(string? pesel)
+        {
+            if (pesel == null)
+            {
+                return NotFound();
+            }
+
+            var person = _personRepository.GetPersonByPesel(pesel);
+
+            if (person == null)
+            {
+                return NotFound();
+            }
+
+            var personDto = _mapper.Map<PersonDto>(person);
+
+            return View(personDto);
+        }
+
+        // POST: Person/Remove/{pesel}
+        [HttpPost, ActionName("Remove")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> RemoveConfirmed(string pesel)
+        {
+            var person = _personRepository.GetPersonByPesel(pesel);
+
+            if (person == null)
+                return NotFound();
+
+            _personRepository.DeletePerson(person);
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
