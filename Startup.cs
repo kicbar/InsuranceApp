@@ -39,7 +39,7 @@ namespace InsuranceApp
         {
             services.AddMvc();
             services.AddControllers()
-                .AddFluentValidation()
+                //.AddFluentValidation()
                 .AddNewtonsoftJson(options =>
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddTransient<IContractRepository, ContractRepository>();

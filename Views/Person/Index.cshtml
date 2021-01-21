@@ -44,9 +44,9 @@
                     @Html.DisplayFor(modelItem => item.Nationality)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Pesel">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Pesel">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Pesel">Delete</a>
+                    <a asp-action="Edit" asp-route-pesel="@item.Pesel">Edit</a> |
+                    <a asp-action="Details" asp-route-pesel="@item.Pesel">Details</a> |
+                    <a asp-action="Delete" asp-route-pesel="@item.Pesel">Delete</a>
                 </td>
             </tr>
         }

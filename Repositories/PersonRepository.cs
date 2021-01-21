@@ -37,6 +37,11 @@ namespace InsuranceApp.Repositories
             return _insuranceDbContext.Persons.FirstOrDefault(p => p.Pesel == pesel);
         }
 
+        public Person GetPersonById(int Id)
+        {
+            return _insuranceDbContext.Persons.FirstOrDefault(p => p.Id == Id);
+        }
+
         public void AddPerson(Person person)
         {
             _insuranceDbContext.Persons.Add(person);
@@ -48,6 +53,14 @@ namespace InsuranceApp.Repositories
             person.FirstName = personModel.FirstName;
             person.LastName = personModel.LastName;
             person.Pesel = personModel.Pesel;
+            person.Nationality = personModel.Nationality;
+
+            _insuranceDbContext.SaveChanges();
+        }
+        public void EditPersonByPesel(Person person, PersonDto personModel)
+        {
+            person.FirstName = personModel.FirstName;
+            person.LastName = personModel.LastName;
             person.Nationality = personModel.Nationality;
 
             _insuranceDbContext.SaveChanges();
