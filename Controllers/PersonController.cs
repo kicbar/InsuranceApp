@@ -76,6 +76,26 @@ namespace InsuranceApp.Controllers
             return View(personDto);
         }
 
+        // GET: Movies/Create
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Movies/Create
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create(PersonDto personDto)
+        {
+            if (ModelState.IsValid)
+            {
+                var person = _mapper.Map<Person>(personDto);
+                _personRepository.AddPerson(person);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(personDto);
+        }
+
         // POST: Person/Edit/{pesel}
         [HttpPost]
         [ValidateAntiForgeryToken]
